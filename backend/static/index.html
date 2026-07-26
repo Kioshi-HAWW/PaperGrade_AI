@@ -1056,7 +1056,8 @@
         // Connect real-time WebSocket
         function connectWS() {
             const loc = window.location;
-            const wsUri = `ws://${loc.host}/ws`;
+            const wsProtocol = loc.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUri = `${wsProtocol}//${loc.host}/ws`;
             webSocket = new WebSocket(wsUri);
             
             webSocket.onmessage = function (event) {
