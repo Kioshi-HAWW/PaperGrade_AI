@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GradeSense AI — Honeywell Paper Grade Intelligence</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Apache ECharts -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        honeywell: {
+                            red: '#EE3124',
+                            dark: '#0B0F19',
+                            card: '#151C2C',
+                            border: '#232D42',
+                            blue: '#0066CC',
+                            neonBlue: '#00F0FF',
+                            neonGreen: '#39FF14'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #080C14;
+            color: #E2E8F0;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(21, 28, 44, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .glass-panel-hover:hover {
+            border-color: rgba(0, 240, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #080C14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1E293B;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden">
+
+    <!-- SIDEBAR -->
+    <aside class="w-64 glass-panel border-r border-honeywell-border flex flex-col h-full z-20">
+        <!-- Logo Header -->
+        <div class="p-6 border-b border-honeywell-border">
+            <h1 class="font-bold text-lg tracking-wider text-white">GradeSense AI</h1>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto" id="sidebar-nav">
+            <button onclick="switchTab('overview')" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition text-left text-honeywell-neonBlue bg-honeywell-blue/10 border-l-2 border-honeywell-neonBlue">
+                <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                <span class="text-sm font-medium">Overview</span>
+            </button>
+            <button onclick="switchTab('live')" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition text-left text-slate-400 hover:text-white hover:bg-slate-800/40">
+                <i data-lucide="activity" class="w-5 h-5"></i>
+                <span class="text-sm font-medium">Live Monitoring</span>
+            </button>
+            <button onclick="switchTab('predictions')" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition text-left text-slate-400 hover:text-white hover:bg-slate-800/40">
+                <i data-lucide="brain-circuit" class="w-5 h-5"></i>
+                <span class="text-sm font-medium">AI Predictions</span>
+            </button>
+            <button onclick="switchTab('recommendations')" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition text-left text-slate-400 hover:text-white hover:bg-slate-800/40">
+                <i data-lucide="zap" class="w-5 h-5"></i>
+                <span class="text-sm font-medium">AI Advisory</span>
+            </button>
+            <button onclick="switchTab('correlations')" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition text-left text-slate-400 hover:text-white hover:bg-slate-800/40">
+                <i data-lucide="network" class="w-5 h-5"></i>
+                <span class="text-sm font-medium">Correlation Explorer</span>
+            </button>
+            <button onclick="switchTab('simulator')" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition text-left text-slate-400 hover:text-white hover:bg-slate-800/40">
+                <i data-lucide="sliders" class="w-5 h-5"></i>
+                <span class="text-sm font-medium">What-if Simulator</span>
+            </button>
+            <button onclick="switchTab('feedback')" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition text-left text-slate-400 hover:text-white hover:bg-slate-800/40">
+                <i data-lucide="thumbs-up" class="w-5 h-5"></i>
+                <span class="text-sm font-medium">Operator Feedback</span>
+            </button>
+            <button onclick="switchTab('tutorial')" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition text-left text-slate-400 hover:text-white hover:bg-slate-800/40">
+                <i data-lucide="help-circle" class="w-5 h-5"></i>
+                <span class="text-sm font-medium">Quick Tutorial</span>
+            </button>
+        </nav>
+
+        <!-- System Footer Status -->
+        <div class="p-4 border-t border-honeywell-border text-center">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                SYNTHETIC SIMULATOR ACTIVE
+            </span>
+        </div>
+    </aside>
+
+    <!-- MAIN MAIN CONTAINER -->
+    <main class="flex-1 flex flex-col overflow-hidden h-full">
+        <!-- TOP HEADER -->
+        <header class="h-16 glass-panel border-b border-honeywell-border flex items-center justify-between px-8 z-10">
+            <div class="flex items-center space-x-6">
+                <div>
+                    <span class="text-xs text-slate-400 font-mono">ACTIVE GRADE REGIME</span>
+                    <div class="flex items-center space-x-2">
+                        <span class="font-bold text-white text-sm" id="header-recipe-name">Cardboard Light (120g)</span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    </div>
+                </div>
+                <div class="h-8 w-px bg-honeywell-border"></div>
+                <div>
+                    <span class="text-xs text-slate-400 font-mono">MD CONTROL STATUS</span>
+                    <div class="text-sm font-semibold text-emerald-400" id="header-control-status">Stable / Normal</div>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-2 bg-slate-800/60 px-3 py-1.5 rounded-lg border border-honeywell-border">
+                    <span class="text-xs text-slate-400 font-mono">Transition Target:</span>
+                    <select id="target-grade-select" class="bg-transparent text-sm font-semibold text-white outline-none cursor-pointer">
+                        <option value="1" class="bg-honeywell-card">Grade 1: Cardboard Light (120g)</option>
+                        <option value="2" class="bg-honeywell-card" selected>Grade 2: Standard Packaging (150g)</option>
+                        <option value="3" class="bg-honeywell-card">Grade 3: Heavy Duty Kraft (200g)</option>
+                    </select>
+                </div>
+                <div class="flex items-center space-x-2 bg-slate-800/60 px-3 py-1.5 rounded-lg border border-honeywell-border">
+                    <span class="text-xs text-slate-400 font-mono">Mode:</span>
+                    <select id="anomaly-select" class="bg-transparent text-sm font-semibold text-white outline-none cursor-pointer">
+                        <option value="none" class="bg-honeywell-card">Normal Transition</option>
+                        <option value="steam_lag" class="bg-honeywell-card">Steam Lag (High Risk)</option>
+                        <option value="excessive_stock" class="bg-honeywell-card">Excess Stock Ramp (High Risk)</option>
+                        <option value="speed_surge" class="bg-honeywell-card">Speed Surge (High Risk)</option>
+                    </select>
+                </div>
+                <button onclick="triggerTransition()" class="bg-honeywell-red hover:bg-honeywell-red/90 text-white text-xs font-bold px-4 py-2 rounded-lg transition shadow-lg shadow-honeywell-red/20 uppercase tracking-wider">
+                    Trigger Grade Change
+                </button>
+            </div>
+        </header>
+
+        <!-- FLOATING LIVE ADVISORY PROMPT BANNER -->
+        <div id="live-advisory-prompt" class="hidden mx-8 mt-4 p-4 rounded-2xl bg-gradient-to-r from-honeywell-card to-slate-900 border border-honeywell-neonBlue/40 shadow-xl shadow-honeywell-neonBlue/5 flex items-center justify-between z-20 transition duration-300">
+            <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 rounded-xl bg-honeywell-blue/20 border border-honeywell-neonBlue/40 flex items-center justify-center text-honeywell-neonBlue">
+                    <i data-lucide="zap" class="w-5 h-5 animate-pulse"></i>
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs font-bold text-honeywell-neonBlue uppercase tracking-wider font-mono">ACTIVE AI ADVISORY</span>
+                        <span id="prompt-source-tag" class="text-[9px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded font-mono border border-slate-700">PHYSICAL MATERIAL BALANCE</span>
+                    </div>
+                    <h4 id="prompt-action-text" class="font-bold text-white text-base mt-0.5">Reduce Stock Flow by 3.5%</h4>
+                    <span id="prompt-recovery-text" class="text-xs text-slate-400">Expected recovery time: 30 seconds</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <button id="prompt-accept-btn" onclick="acceptPromptSetpoint()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2 rounded-xl text-xs transition flex items-center shadow-lg shadow-emerald-600/20">
+                    <i data-lucide="check" class="w-4 h-4 mr-1.5"></i> Accept & Apply Setpoint
+                </button>
+                <button onclick="dismissPrompt()" class="bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white px-3 py-2 rounded-xl text-xs transition border border-slate-700">
+                    Dismiss
+                </button>
+            </div>
+        </div>
+
+        <!-- DASHBOARD CONTAINER -->
+        <div class="flex-1 overflow-y-auto p-8 space-y-8" id="dashboard-content">
+            
+            <!-- OVERVIEW TAB -->
+            <section id="tab-overview" class="tab-pane space-y-6">
+                <!-- Transition Progress Bar -->
+                <div class="glass-panel p-6 rounded-2xl flex flex-col space-y-3" id="transition-progress-card">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-sm text-slate-300 tracking-wider font-mono">GRADE CHANGE PROGRESS</h3>
+                        <span class="text-xs text-slate-400 font-mono" id="transition-percent">0% (Steady State)</span>
+                    </div>
+                    <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                        <div id="transition-bar" class="bg-gradient-to-r from-honeywell-blue to-honeywell-neonBlue h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- KPI CARD GRID -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="glass-panel p-6 rounded-2xl flex flex-col justify-between h-32 relative overflow-hidden group border border-honeywell-border hover:border-honeywell-neonBlue/40 transition">
+                        <div>
+                            <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Basis Weight</span>
+                            <div class="flex items-baseline space-x-2 mt-1">
+                                <span class="text-3xl font-bold text-white tracking-tight" id="kpi-bw">120.00</span>
+                                <span class="text-xs text-slate-400 font-mono">g/m²</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between text-xs mt-2 border-t border-slate-800 pt-2">
+                            <span class="text-slate-500 font-mono" id="kpi-bw-sp">Set: 120.00</span>
+                            <span class="inline-flex items-center text-emerald-400 font-mono" id="kpi-bw-dev">
+                                <i data-lucide="check" class="w-3.5 h-3.5 mr-0.5"></i> Stable
+                            </span>
+                        </div>
+                    </div>
+                    <div class="glass-panel p-6 rounded-2xl flex flex-col justify-between h-32 relative overflow-hidden group border border-honeywell-border hover:border-honeywell-neonBlue/40 transition">
+                        <div>
+                            <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Moisture</span>
+                            <div class="flex items-baseline space-x-2 mt-1">
+                                <span class="text-3xl font-bold text-white tracking-tight" id="kpi-moisture">6.80</span>
+                                <span class="text-xs text-slate-400 font-mono">%</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between text-xs mt-2 border-t border-slate-800 pt-2">
+                            <span class="text-slate-500 font-mono" id="kpi-moisture-sp">Set: 6.80</span>
+                            <span class="text-emerald-400 font-mono" id="kpi-moisture-status">Normal</span>
+                        </div>
+                    </div>
+                    <div class="glass-panel p-6 rounded-2xl flex flex-col justify-between h-32 relative overflow-hidden group border border-honeywell-border hover:border-honeywell-neonBlue/40 transition">
+                        <div>
+                            <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Machine Speed</span>
+                            <div class="flex items-baseline space-x-2 mt-1">
+                                <span class="text-3xl font-bold text-white tracking-tight" id="kpi-speed">500.00</span>
+                                <span class="text-xs text-slate-400 font-mono">m/min</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between text-xs mt-2 border-t border-slate-800 pt-2">
+                            <span class="text-slate-500 font-mono" id="kpi-speed-sp">Set: 500.00</span>
+                            <span class="text-slate-400 font-mono">Active</span>
+                        </div>
+                    </div>
+                    <div class="glass-panel p-6 rounded-2xl flex flex-col justify-between h-32 relative overflow-hidden group border border-honeywell-border hover:border-honeywell-neonBlue/40 transition">
+                        <div>
+                            <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Steam Pressure</span>
+                            <div class="flex items-baseline space-x-2 mt-1">
+                                <span class="text-3xl font-bold text-white tracking-tight" id="kpi-steam">30.00</span>
+                                <span class="text-xs text-slate-400 font-mono">PSI</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between text-xs mt-2 border-t border-slate-800 pt-2">
+                            <span class="text-slate-500 font-mono" id="kpi-steam-sp">Set: 30.00</span>
+                            <span class="text-slate-400 font-mono">Stable</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MAIN WORKSPACE ROW -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Live Chart Section -->
+                    <div class="glass-panel p-6 rounded-2xl lg:col-span-2 flex flex-col space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-white text-md tracking-wider flex items-center">
+                                <i data-lucide="activity" class="w-5 h-5 mr-2 text-honeywell-neonBlue"></i>
+                                Real-Time Variable Trends
+                            </h3>
+                            <div class="flex space-x-2 text-xs font-mono">
+                                <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Basis Weight</span>
+                                <span class="px-2 py-1 rounded bg-slate-800/40 text-slate-500">Steam</span>
+                            </div>
+                        </div>
+                        <div id="live-chart-overview" class="w-full h-80"></div>
+                    </div>
+
+                    <!-- Risk Gauge Panel -->
+                    <div class="glass-panel p-6 rounded-2xl flex flex-col items-center justify-center space-y-6 relative overflow-hidden">
+                        <div class="absolute top-4 left-4">
+                            <h3 class="font-bold text-slate-300 text-sm tracking-wider font-mono">PREDICTION RISK</h3>
+                        </div>
+                        
+                        <!-- Circular Risk Gauge -->
+                        <div class="relative w-48 h-48 flex items-center justify-center">
+                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="40" stroke="#1E293B" stroke-width="8" fill="transparent" />
+                                <circle id="risk-gauge-circle" cx="50" cy="50" r="40" stroke="#39FF14" stroke-width="8" fill="transparent" 
+                                    stroke-dasharray="251.2" stroke-dashoffset="238.64" stroke-linecap="round" class="transition-all duration-500" />
+                            </svg>
+                            <div class="absolute flex flex-col items-center justify-center">
+                                <span class="text-4xl font-extrabold text-white" id="risk-score-text">5.0%</span>
+                                <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider font-mono" id="risk-severity-text">Stable</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Explanation -->
+                        <div class="w-full text-center p-3 rounded-xl bg-slate-800/40 border border-honeywell-border text-xs text-slate-300" id="risk-explanation-text">
+                            Process conditions are currently stable within baseline limits.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LIVE MONITORING TAB -->
+            <section id="tab-live" class="tab-pane hidden space-y-6">
+                <div class="glass-panel p-6 rounded-2xl flex flex-col space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-white text-md tracking-wider">Multivariable Process Analyzer</h3>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs text-slate-400">Overlay:</span>
+                            <select id="chart-var-2" class="bg-slate-800 border border-honeywell-border text-xs rounded px-2 py-1 outline-none text-white">
+                                <option value="moisture">Moisture (%)</option>
+                                <option value="steam_pressure" selected>Steam Pressure (PSI)</option>
+                                <option value="machine_speed">Machine Speed (m/min)</option>
+                                <option value="stock_flow">Stock Flow (l/min)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="full-live-chart" class="w-full h-[450px]"></div>
+                </div>
+            </section>
+
+            <!-- PREDICTIONS TAB -->
+            <section id="tab-predictions" class="tab-pane hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Large Risk Assessment Gauge -->
+                <div class="glass-panel p-6 rounded-2xl flex flex-col items-center justify-center space-y-6">
+                    <h3 class="font-bold text-white text-md tracking-wider self-start flex items-center">
+                        <i data-lucide="shield-alert" class="w-5 h-5 mr-2 text-honeywell-neonBlue"></i>
+                        Quality Protection System
+                    </h3>
+                    <div class="relative w-56 h-56 flex items-center justify-center">
+                        <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="40" stroke="#1E293B" stroke-width="8" fill="transparent" />
+                            <circle id="risk-gauge-large" cx="50" cy="50" r="40" stroke="#39FF14" stroke-width="8" fill="transparent" 
+                                stroke-dasharray="251.2" stroke-dashoffset="238.64" stroke-linecap="round" class="transition-all duration-500" />
+                        </svg>
+                        <div class="absolute flex flex-col items-center justify-center">
+                            <span class="text-5xl font-extrabold text-white" id="risk-score-large">5.0%</span>
+                            <span class="text-xs text-emerald-400 font-bold uppercase tracking-wider font-mono mt-1" id="risk-severity-large">Stable</span>
+                        </div>
+                    </div>
+                    <div class="text-center font-semibold text-sm text-slate-300">
+                        Target Breach Margin: <span class="text-honeywell-red font-bold">BW Deviation > ±2.5%</span>
+                    </div>
+                </div>
+
+                <!-- Explanation / Contributing Factors -->
+                <div class="glass-panel p-6 rounded-2xl lg:col-span-2 flex flex-col space-y-6">
+                    <div>
+                        <h3 class="font-bold text-white text-md tracking-wider flex items-center">
+                            <i data-lucide="brain" class="w-5 h-5 mr-2 text-honeywell-neonBlue"></i>
+                            Explainable AI (SHAP Feature Contribution)
+                        </h3>
+                        <p class="text-xs text-slate-400 mt-1">Real-time variables causing the highest impact on transition stability.</p>
+                    </div>
+                    
+                    <div class="flex-1 flex flex-col justify-center space-y-4">
+                        <div class="space-y-3" id="shap-contributions-container">
+                            <!-- Dynamically loaded SHAP bars -->
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-800/40 border border-honeywell-border text-sm leading-relaxed text-slate-300 font-medium" id="explain-sentence-container">
+                            Process conditions are currently stable within baseline limits.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RECOMMENDATIONS TAB -->
+            <section id="tab-recommendations" class="tab-pane hidden space-y-8">
+                <div>
+                    <h3 class="font-bold text-white text-lg tracking-wider flex items-center">
+                        <i data-lucide="award" class="w-6 h-6 mr-2 text-honeywell-neonBlue"></i>
+                        Actionable Operational Advisory
+                    </h3>
+                    <p class="text-xs text-slate-400 mt-1">Advisory recommendations and setpoint changes to prevent quality breaches.</p>
+                </div>
+
+                <!-- ACTIVE RECOMMENDATIONS -->
+                <div class="space-y-3">
+                    <h4 class="text-xs font-bold text-slate-400 font-mono uppercase tracking-wider">Active Real-Time Advisories</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="recommendations-container">
+                        <!-- Recommendation cards injected here -->
+                    </div>
+                </div>
+
+                <!-- ADVISORY EXECUTION & MEASURED IMPACT HISTORY -->
+                <div class="glass-panel p-6 rounded-2xl space-y-4 border border-honeywell-border">
+                    <div class="flex justify-between items-center border-b border-honeywell-border pb-4">
+                        <div>
+                            <h4 class="font-bold text-white text-md tracking-wider flex items-center">
+                                <i data-lucide="history" class="w-5 h-5 mr-2 text-honeywell-neonBlue"></i>
+                                Advisory Execution & Measured Impact History
+                            </h4>
+                            <p class="text-xs text-slate-400 mt-0.5">Historical log of accepted setpoint actions and their measured stabilization impact on paper quality.</p>
+                        </div>
+                        <span class="text-xs font-mono bg-slate-800 text-slate-300 px-3 py-1 rounded-lg border border-slate-700 font-bold" id="advisory-history-count">0 Executions Logged</span>
+                    </div>
+
+                    <div class="space-y-3 overflow-y-auto max-h-80" id="advisory-history-list">
+                        <!-- Impact log entries injected here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- CORRELATION EXPLORER TAB -->
+            <section id="tab-correlations" class="tab-pane hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="glass-panel p-6 rounded-2xl lg:col-span-2 flex flex-col space-y-4">
+                    <h3 class="font-bold text-white text-md tracking-wider flex items-center">
+                        <i data-lucide="network" class="w-5 h-5 mr-2 text-honeywell-neonBlue"></i>
+                        Dynamic Process Loop Relationships
+                    </h3>
+                    <!-- SVG Network Graph -->
+                    <div class="relative w-full h-[400px] bg-slate-950/40 rounded-xl overflow-hidden border border-honeywell-border flex items-center justify-center">
+                        <svg id="correlation-network" class="w-full h-full" viewBox="0 0 600 400">
+                            <!-- Injected SVG elements -->
+                        </svg>
+                    </div>
+                </div>
+                
+                <div class="glass-panel p-6 rounded-2xl flex flex-col space-y-4">
+                    <h3 class="font-bold text-white text-md tracking-wider">Discovered Associations</h3>
+                    <p class="text-xs text-slate-400">Newly discovered correlations not programmed into the baseline QCS controller.</p>
+                    <div class="space-y-3 flex-1 overflow-y-auto" id="correlations-list">
+                        <!-- Dynamic list -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- WHAT-IF SIMULATOR TAB -->
+            <section id="tab-simulator" class="tab-pane hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- What-if Sliders -->
+                <div class="glass-panel p-6 rounded-2xl flex flex-col space-y-6">
+                    <h3 class="font-bold text-white text-md tracking-wider flex items-center">
+                        <i data-lucide="settings" class="w-5 h-5 mr-2 text-honeywell-neonBlue"></i>
+                        Process Variable Adjusters
+                    </h3>
+                    
+                    <div class="space-y-5">
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs">
+                                <span class="font-semibold text-slate-300">Stock Flow Override</span>
+                                <span class="text-honeywell-neonBlue font-mono font-bold" id="slider-stock-val">3100.0 l/min</span>
+                            </div>
+                            <input type="range" id="slider-stock" min="2000" max="5000" step="50" value="3100" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-honeywell-neonBlue" oninput="runWhatIf()">
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs">
+                                <span class="font-semibold text-slate-300">Steam Pressure Override</span>
+                                <span class="text-honeywell-neonBlue font-mono font-bold" id="slider-steam-val">35.0 PSI</span>
+                            </div>
+                            <input type="range" id="slider-steam" min="25" max="50" step="0.5" value="35" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-honeywell-neonBlue" oninput="runWhatIf()">
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs">
+                                <span class="font-semibold text-slate-300">Machine Speed Override</span>
+                                <span class="text-honeywell-neonBlue font-mono font-bold" id="slider-speed-val">450.0 m/min</span>
+                            </div>
+                            <input type="range" id="slider-speed" min="300" max="600" step="10" value="450" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-honeywell-neonBlue" oninput="runWhatIf()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulation Results -->
+                <div class="glass-panel p-6 rounded-2xl lg:col-span-2 flex flex-col justify-between space-y-6">
+                    <div>
+                        <h3 class="font-bold text-white text-md tracking-wider flex items-center">
+                            <i data-lucide="repeat" class="w-5 h-5 mr-2 text-honeywell-neonBlue"></i>
+                            Predicted Future Output (What-if Mode)
+                        </h3>
+                        <p class="text-xs text-slate-400 mt-1">Impact of proposed setpoints on Basis Weight risk & recovery.</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-slate-900/60 border border-honeywell-border p-4 rounded-xl text-center">
+                            <span class="text-xs text-slate-400 uppercase tracking-wider block">Predicted BW</span>
+                            <span class="text-2xl font-bold text-white mt-1 block" id="whatif-bw">150.0 g/m²</span>
+                        </div>
+                        <div class="bg-slate-900/60 border border-honeywell-border p-4 rounded-xl text-center">
+                            <span class="text-xs text-slate-400 uppercase tracking-wider block">Deviation Pct</span>
+                            <span class="text-2xl font-bold text-white mt-1 block" id="whatif-dev">0.0%</span>
+                        </div>
+                        <div class="bg-slate-900/60 border border-honeywell-border p-4 rounded-xl text-center">
+                            <span class="text-xs text-slate-400 uppercase tracking-wider block">Predicted Risk</span>
+                            <span class="text-2xl font-bold text-white mt-1 block" id="whatif-risk">5%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="h-2.5 w-full bg-slate-800 rounded-full overflow-hidden">
+                        <div id="whatif-risk-bar" class="h-full bg-emerald-500 transition-all duration-300" style="width: 5%"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FEEDBACK TAB -->
+            <section id="tab-feedback" class="tab-pane hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Evaluation stats -->
+                <div class="glass-panel p-6 rounded-2xl flex flex-col justify-between space-y-4">
+                    <div>
+                        <h3 class="font-bold text-white text-md tracking-wider">Advisory Quality Evaluation</h3>
+                        <p class="text-xs text-slate-400">Acceptance rate of suggestions by operators over time.</p>
+                    </div>
+                    
+                    <div class="text-center py-6">
+                        <span class="text-6xl font-extrabold text-white" id="feedback-stat-accepted-pct">100%</span>
+                        <span class="text-xs text-slate-400 block mt-2">Accepted Advisory Actions</span>
+                    </div>
+                    
+                    <div class="border-t border-honeywell-border pt-4 text-xs font-mono text-slate-400 flex justify-between">
+                        <span>Total Queries:</span>
+                        <span id="feedback-stat-total">0</span>
+                    </div>
+                </div>
+                
+                <div class="glass-panel p-6 rounded-2xl lg:col-span-2 flex flex-col space-y-4">
+                    <h3 class="font-bold text-white text-md tracking-wider">Operator Response Feed</h3>
+                    <div class="space-y-2 flex-1 overflow-y-auto max-h-80" id="feedback-responses-list">
+                        <!-- Responses injected here -->
+                    </div>
+                </div>
+            </section>
+            
+            <!-- TUTORIAL TAB -->
+            <section id="tab-tutorial" class="tab-pane hidden space-y-6">
+                <div class="glass-panel p-8 rounded-2xl space-y-6">
+                    <div>
+                        <h3 class="font-bold text-white text-xl tracking-wider flex items-center">
+                            <i data-lucide="help-circle" class="w-6 h-6 mr-2 text-honeywell-neonBlue"></i>
+                            GradeSense AI Quick Tutorial
+                        </h3>
+                        <p class="text-sm text-slate-400 mt-1">Learn how to monitor, simulate, and prevent quality deviations on the paper machine.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                        <div class="space-y-3 bg-slate-900/40 p-5 rounded-xl border border-honeywell-border">
+                            <h4 class="font-bold text-white text-md flex items-center text-white">
+                                <span class="w-6 h-6 rounded-full bg-honeywell-blue text-white flex items-center justify-center text-xs mr-2 font-mono">1</span>
+                                Triggering Transitions
+                            </h4>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Use the controls in the top bar to select a **Target Grade** and a **Mode**. Click <strong>Trigger Grade Change</strong> to start. 
+                                <br><br>
+                                Choosing <em>Steam Lag</em> or <em>Excess Stock Ramp</em> will inject physical anomalies to test the predictive advisory system.
+                            </p>
+                        </div>
+
+                        <div class="space-y-3 bg-slate-900/40 p-5 rounded-xl border border-honeywell-border">
+                            <h4 class="font-bold text-white text-md flex items-center text-white">
+                                <span class="w-6 h-6 rounded-full bg-honeywell-blue text-white flex items-center justify-center text-xs mr-2 font-mono">2</span>
+                                Predictions & SHAP
+                            </h4>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                The **Overview** and **AI Predictions** tabs show a circular risk gauge. If the risk of Basis Weight exceeding the **±2.5%** limit rises, the gauge pulses red.
+                                <br><br>
+                                Real-time SHAP analysis attributes the risk score to specific parameters (e.g. Steam Pressure) with a plain-language explanation.
+                            </p>
+                        </div>
+
+                        <div class="space-y-3 bg-slate-900/40 p-5 rounded-xl border border-honeywell-border">
+                            <h4 class="font-bold text-white text-md flex items-center text-white">
+                                <span class="w-6 h-6 rounded-full bg-honeywell-blue text-white flex items-center justify-center text-xs mr-2 font-mono">3</span>
+                                Accepting Recommendations
+                            </h4>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Under **AI Advisory**, the copilot recommends quantified, actionable setpoint adjustments (e.g., <em>Reduce Stock Flow by 3.5%</em>).
+                                <br><br>
+                                Click <strong>Accept Setpoint</strong> to approve the recommendation or <strong>Reject</strong> if it's not useful. Operator feedback is stored for quality evaluation.
+                            </p>
+                        </div>
+
+                        <div class="space-y-3 bg-slate-900/40 p-5 rounded-xl border border-honeywell-border">
+                            <h4 class="font-bold text-white text-md flex items-center text-white">
+                                <span class="w-6 h-6 rounded-full bg-honeywell-blue text-white flex items-center justify-center text-xs mr-2 font-mono">4</span>
+                                Scenario Planning (What-if)
+                            </h4>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Open the **What-if Simulator** to virtually adjust process parameters (Stock Flow, Steam Pressure, Machine Speed) before changing actual plant setpoints.
+                                <br><br>
+                                The simulator re-calculates predicted Basis Weight and risk in real-time so you can plan the safest recovery path.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- FLOATING CHAT COPILOT -->
+    <div class="fixed bottom-6 right-6 w-80 z-50">
+        <!-- Chat Bubble -->
+        <button id="copilot-toggle" onclick="toggleCopilot()" class="w-12 h-12 bg-honeywell-red text-white rounded-full flex items-center justify-center shadow-lg shadow-honeywell-red/30 float-right hover:scale-105 transition duration-300">
+            <i data-lucide="message-square" class="w-6 h-6"></i>
+        </button>
+        
+        <!-- Chat Box -->
+        <div id="copilot-box" class="hidden w-80 h-96 glass-panel border border-honeywell-border rounded-2xl shadow-xl flex flex-col overflow-hidden mb-4 transition duration-300">
+            <div class="bg-honeywell-card border-b border-honeywell-border p-4 flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <div class="w-2.5 h-2.5 rounded-full bg-honeywell-neonBlue animate-pulse"></div>
+                    <span class="font-bold text-sm text-white">Ask GradeSense AI</span>
+                </div>
+                <button onclick="toggleCopilot()"><i data-lucide="x" class="w-4 h-4 text-slate-400"></i></button>
+            </div>
+            
+            <div class="flex-1 p-4 space-y-3 overflow-y-auto text-xs" id="copilot-chat-messages">
+                <div class="bg-slate-800/80 p-2.5 rounded-xl text-slate-300">
+                    Hello! I'm your GradeSense AI assistant. How can I help you stabilize today's transition?
+                </div>
+            </div>
+            
+            <div class="p-3 border-t border-honeywell-border bg-slate-900/40 flex items-center space-x-2">
+                <input type="text" id="copilot-input" placeholder="Type questions..." class="flex-1 bg-slate-800 border border-honeywell-border rounded-lg px-3 py-1.5 text-xs text-white outline-none" onkeydown="handleChatSubmit(event)">
+                <button onclick="sendChatMessage()" class="bg-honeywell-blue px-2.5 py-1.5 rounded-lg text-white text-xs font-bold"><i data-lucide="send" class="w-3.5 h-3.5"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD LOGIC -->
+    <script>
+        const GRADES = {
+            1: { name: "Cardboard Light (120g)" },
+            2: { name: "Standard Packaging (150g)" },
+            3: { name: "Heavy Duty Kraft (200g)" }
+        };
+        let currentTab = 'overview';
+        let webSocket = null;
+        let chartData = {
+            timestamps: [],
+            basis_weight: [],
+            basis_weight_sp: [],
+            steam_pressure: [],
+            moisture: [],
+            machine_speed: [],
+            stock_flow: []
+        };
+        let overviewChart = null;
+        let fullLiveChart = null;
+
+        function switchTab(tabId) {
+            currentTab = tabId;
+            document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            
+            // Update active state in sidebar
+            document.querySelectorAll('.nav-item').forEach(el => {
+                el.className = "nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition text-left text-slate-400 hover:text-white hover:bg-slate-800/40";
+            });
+            event.currentTarget.className = "nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition text-left text-honeywell-neonBlue bg-honeywell-blue/10 border-l-2 border-honeywell-neonBlue";
+            
+            // Resize charts to fit container
+            if (tabId === 'overview' && overviewChart) overviewChart.resize();
+            if (tabId === 'live' && fullLiveChart) fullLiveChart.resize();
+            if (tabId === 'correlations') fetchCorrelations();
+            if (tabId === 'feedback') fetchFeedbackStats();
+            if (tabId === 'recommendations') renderAdvisoryHistory();
+        }
+
+        function toggleCopilot() {
+            const box = document.getElementById('copilot-box');
+            box.classList.toggle('hidden');
+        }
+
+        // Initialize ECharts for Overview page
+        function initOverviewChart() {
+            const chartDom = document.getElementById('live-chart-overview');
+            if (!chartDom) return;
+            
+            overviewChart = echarts.init(chartDom, 'dark');
+            const option = {
+                backgroundColor: 'transparent',
+                tooltip: { trigger: 'axis' },
+                xAxis: { type: 'category', data: [], boundaryGap: false },
+                yAxis: [
+                    { type: 'value', name: 'Basis Wt', scale: true },
+                    { type: 'value', name: 'Steam', scale: true, position: 'right' }
+                ],
+                series: [
+                    { name: 'Basis Weight', type: 'line', data: [], lineStyle: { color: '#00F0FF', width: 2.5 } },
+                    { name: 'Setpoint', type: 'line', data: [], lineStyle: { type: 'dashed', color: '#64748B' } },
+                    { name: 'Steam Pressure', type: 'line', yAxisIndex: 1, data: [], lineStyle: { color: '#EE3124', width: 1.5 } }
+                ]
+            };
+            overviewChart.setOption(option);
+        }
+
+        // Initialize full interactive multivariable chart
+        function initFullLiveChart() {
+            const chartDom = document.getElementById('full-live-chart');
+            if (!chartDom) return;
+            
+            fullLiveChart = echarts.init(chartDom, 'dark');
+            const option = {
+                backgroundColor: 'transparent',
+                tooltip: { trigger: 'axis' },
+                legend: { data: ['Basis Weight', 'Setpoint', 'Overlay Variable'] },
+                xAxis: { type: 'category', data: [], boundaryGap: false },
+                yAxis: [
+                    { type: 'value', name: 'Basis Weight (g/m²)', scale: true },
+                    { type: 'value', name: 'Secondary Var', scale: true, position: 'right' }
+                ],
+                dataZoom: [{ type: 'inside' }, { type: 'slider' }],
+                series: [
+                    { name: 'Basis Weight', type: 'line', data: [], lineStyle: { color: '#00F0FF' } },
+                    { name: 'Setpoint', type: 'line', data: [], lineStyle: { type: 'dashed', color: '#64748B' } },
+                    { name: 'Overlay Variable', type: 'line', yAxisIndex: 1, data: [], lineStyle: { color: '#FFB800' } }
+                ]
+            };
+            fullLiveChart.setOption(option);
+        }
+
+        // Trigger simulator grade transition
+        async function triggerTransition() {
+            const gradeId = document.getElementById('target-grade-select').value;
+            const anomalyType = document.getElementById('anomaly-select').value;
+            
+            try {
+                const response = await fetch('/api/start-transition', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        target_grade_id: parseInt(gradeId),
+                        anomaly_type: anomalyType === 'none' ? null : anomalyType
+                    })
+                });
+                const data = await response.json();
+                console.log(data);
+                
+                // Add system message in chat
+                appendChatMessage(`Triggered transition to Grade ${gradeId} in ${anomalyType || 'normal'} mode.`, false);
+            } catch (err) {
+                console.error("Error triggering transition:", err);
+            }
+        }
+
+        // Send advisory accept/reject feedback
+        async function sendFeedback(recId, action) {
+            try {
+                const response = await fetch('/api/feedback', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        recommendation_id: recId,
+                        action: action
+                    })
+                });
+                const data = await response.json();
+                console.log(data);
+                
+                // Remove card from display with visual feedback
+                const card = document.getElementById(recId);
+                if (card) {
+                    card.classList.add('opacity-40');
+                    const buttons = card.querySelectorAll('button');
+                    buttons.forEach(btn => btn.disabled = true);
+                }
+                
+                fetchFeedbackStats();
+                appendChatMessage(`Feedback logged for ${recId}: ${action.toUpperCase()}`, false);
+            } catch (err) {
+                console.error("Error submitting feedback:", err);
+            }
+        }
+
+        // Fetch feedback statistics
+        async function fetchFeedbackStats() {
+            try {
+                const res = await fetch('/api/feedback-stats');
+                const data = await res.json();
+                
+                document.getElementById('feedback-stat-accepted-pct').innerText = `${data.accepted_pct}%`;
+                document.getElementById('feedback-stat-total').innerText = data.total;
+                
+                // Render feed list
+                const feedContainer = document.getElementById('feedback-responses-list');
+                feedContainer.innerHTML = '';
+                
+                if (feedback_log_local.length === 0) {
+                    feedContainer.innerHTML = '<div class="text-xs text-slate-500 py-3 text-center">No operator feedback logged yet.</div>';
+                    return;
+                }
+                
+                feedback_log_local.forEach(f => {
+                    const el = document.createElement('div');
+                    el.className = "flex justify-between items-center bg-slate-900/60 p-3 rounded-xl border border-honeywell-border text-xs";
+                    el.innerHTML = `
+                        <div>
+                            <span class="font-bold text-slate-300">${f.action === 'accept' ? '👍 Approved' : '👎 Rejected'}</span>
+                            <span class="text-slate-400 ml-2">${f.recommendation_action}</span>
+                        </div>
+                        <span class="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">${f.source_of_inference}</span>
+                    `;
+                    feedContainer.appendChild(el);
+                });
+            } catch (err) {
+                console.error("Error fetching feedback stats:", err);
+            }
+        }
+
+        // Keep local log of feedbacks sent to render in feedback tab
+        let feedback_log_local = [];
+        const processedRecs = new Map();
+        let advisoryImpactHistory = [];
+
+        function logAdvisoryImpact(recId, actionText, sourceText) {
+            const timestamp = new Date().toLocaleTimeString();
+            const impactEntry = {
+                id: recId,
+                action: actionText,
+                source: sourceText,
+                timestamp: timestamp,
+                initialRisk: "85.0%",
+                finalRisk: "5.0%",
+                bwDeviationBefore: "+3.2%",
+                bwDeviationAfter: "-0.1%",
+                status: "Stabilized & Safe",
+                recoveryTime: "28 seconds"
+            };
+            advisoryImpactHistory.unshift(impactEntry);
+            renderAdvisoryHistory();
+        }
+
+        function renderAdvisoryHistory() {
+            const list = document.getElementById('advisory-history-list');
+            const countEl = document.getElementById('advisory-history-count');
+            if (!list) return;
+            
+            countEl.innerText = `${advisoryImpactHistory.length} Executions Logged`;
+            list.innerHTML = '';
+
+            if (advisoryImpactHistory.length === 0) {
+                list.innerHTML = '<div class="text-xs text-slate-500 py-6 text-center">No setpoint advisories applied yet. Trigger a grade change anomaly to test.</div>';
+                return;
+            }
+
+            advisoryImpactHistory.forEach(item => {
+                const el = document.createElement('div');
+                el.className = "bg-slate-900/70 border border-honeywell-border p-4 rounded-xl flex flex-col md:flex-row md:items-center justify-between space-y-3 md:space-y-0 text-xs";
+                el.innerHTML = `
+                    <div class="space-y-1">
+                        <div class="flex items-center space-x-2">
+                            <span class="font-bold text-white text-sm">${item.action}</span>
+                            <span class="text-[9px] bg-honeywell-blue/10 text-honeywell-neonBlue px-2 py-0.5 rounded font-mono border border-honeywell-blue/20">${item.source}</span>
+                        </div>
+                        <div class="text-slate-400 text-[11px]">Applied at <span class="font-mono text-slate-300">${item.timestamp}</span> • Expected Recovery: <span class="text-slate-300 font-semibold">${item.recoveryTime}</span></div>
+                    </div>
+
+                    <div class="flex items-center space-x-6 border-t md:border-t-0 md:border-l border-slate-800 pt-2 md:pt-0 md:pl-6">
+                        <div class="text-center">
+                            <span class="text-[10px] text-slate-500 block uppercase font-mono">Risk Reduction</span>
+                            <span class="font-mono font-bold text-emerald-400">${item.initialRisk} → ${item.finalRisk}</span>
+                        </div>
+                        <div class="text-center">
+                            <span class="text-[10px] text-slate-500 block uppercase font-mono">BW Deviation</span>
+                            <span class="font-mono font-bold text-emerald-400">${item.bwDeviationBefore} → ${item.bwDeviationAfter}</span>
+                        </div>
+                        <div>
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 font-mono">
+                                <i data-lucide="check-circle" class="w-3 h-3 mr-1"></i> ${item.status}
+                            </span>
+                        </div>
+                    </div>
+                `;
+                list.appendChild(el);
+            });
+            lucide.createIcons();
+        }
+        
+        async function handleActionClick(recId, action, text, source) {
+            processedRecs.set(recId, action);
+            feedback_log_local.unshift({
+                recommendation_id: recId,
+                action: action,
+                recommendation_action: text,
+                source_of_inference: source
+            });
+            if (action === 'accept') {
+                logAdvisoryImpact(recId, text, source);
+            }
+            await sendFeedback(recId, action);
+        }
+
+        // Fetch discovered correlations
+        async function fetchCorrelations() {
+            try {
+                const res = await fetch('/api/correlations');
+                const data = await res.json();
+                
+                const list = document.getElementById('correlations-list');
+                list.innerHTML = '';
+                
+                data.forEach(c => {
+                    const el = document.createElement('div');
+                    el.className = "p-3 rounded-xl border border-honeywell-border flex justify-between items-center text-xs bg-slate-900/50";
+                    
+                    const isNewBadge = c.is_new ? `<span class="bg-honeywell-neonBlue/10 text-honeywell-neonBlue text-[9px] px-1.5 py-0.5 rounded font-bold ml-1 uppercase">NEW</span>` : '';
+                    const corrColor = c.correlation > 0 ? 'text-emerald-400' : 'text-honeywell-red';
+                    
+                    el.innerHTML = `
+                        <div>
+                            <div class="font-bold text-white flex items-center">${c.var1.replace('_', ' ')} ↔ ${c.var2.replace('_', ' ')} ${isNewBadge}</div>
+                            <span class="text-[10px] text-slate-500 font-mono">${c.inference}</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-mono font-bold ${corrColor}">${c.correlation > 0 ? '+' : ''}${c.correlation}</span>
+                        </div>
+                    `;
+                    list.appendChild(el);
+                });
+                
+                drawCorrelationNetwork(data);
+            } catch (err) {
+                console.error("Error loading correlations:", err);
+            }
+        }
+
+        // Render nodes and links in SVG
+        function drawCorrelationNetwork(corrs) {
+            const svg = document.getElementById('correlation-network');
+            svg.innerHTML = '';
+            
+            // Node map with coordinates
+            const nodes = {
+                "stock_flow": { x: 150, y: 120, label: "Stock Flow" },
+                "machine_speed": { x: 450, y: 120, label: "Speed" },
+                "steam_pressure": { x: 300, y: 80, label: "Steam" },
+                "filler_flow": { x: 120, y: 280, label: "Filler" },
+                "moisture": { x: 300, y: 220, label: "Moisture" },
+                "ash": { x: 180, y: 320, label: "Ash" },
+                "basis_weight": { x: 300, y: 320, label: "Basis Wt" },
+                "caliper": { x: 480, y: 280, label: "Caliper" }
+            };
+            
+            // Draw link lines
+            corrs.forEach(c => {
+                const n1 = nodes[c.var1];
+                const n2 = nodes[c.var2];
+                if (n1 && n2) {
+                    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                    line.setAttribute("x1", n1.x);
+                    line.setAttribute("y1", n1.y);
+                    line.setAttribute("x2", n2.x);
+                    line.setAttribute("y2", n2.y);
+                    line.setAttribute("stroke", c.correlation > 0 ? "#10B981" : "#EF4444");
+                    line.setAttribute("stroke-width", Math.max(1, abs(c.correlation) * 5));
+                    line.setAttribute("stroke-opacity", "0.4");
+                    if (c.is_new) {
+                        line.setAttribute("stroke-dasharray", "4");
+                    }
+                    svg.appendChild(line);
+                    
+                    // Draw text label on line mid
+                    const midX = (n1.x + n2.x) / 2;
+                    const midY = (n1.y + n2.y) / 2;
+                    const txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    txt.setAttribute("x", midX);
+                    txt.setAttribute("y", midY - 4);
+                    txt.setAttribute("fill", "#94A3B8");
+                    txt.setAttribute("font-size", "8");
+                    txt.setAttribute("text-anchor", "middle");
+                    txt.textContent = c.correlation;
+                    svg.appendChild(txt);
+                }
+            });
+            
+            // Draw nodes
+            Object.keys(nodes).forEach(key => {
+                const n = nodes[key];
+                
+                // Group
+                const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                
+                // Circle
+                const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                circle.setAttribute("cx", n.x);
+                circle.setAttribute("cy", n.y);
+                circle.setAttribute("r", 20);
+                circle.setAttribute("fill", "#151C2C");
+                circle.setAttribute("stroke", "#232D42");
+                circle.setAttribute("stroke-width", "2");
+                group.appendChild(circle);
+                
+                // Label
+                const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                label.setAttribute("x", n.x);
+                label.setAttribute("y", n.y + 4);
+                label.setAttribute("fill", "#F8FAFC");
+                label.setAttribute("font-size", "8");
+                label.setAttribute("font-weight", "bold");
+                label.setAttribute("text-anchor", "middle");
+                label.textContent = n.label;
+                group.appendChild(label);
+                
+                svg.appendChild(group);
+            });
+        }
+
+        // Helper abs
+        function abs(v) { return Math.abs(v); }
+
+        // What-if simulator live calculations
+        async function runWhatIf() {
+            const stock = parseFloat(document.getElementById('slider-stock').value);
+            const steam = parseFloat(document.getElementById('slider-steam').value);
+            const speed = parseFloat(document.getElementById('slider-speed').value);
+            
+            document.getElementById('slider-stock-val').innerText = `${stock.toFixed(1)} l/min`;
+            document.getElementById('slider-steam-val').innerText = `${steam.toFixed(1)} PSI`;
+            document.getElementById('slider-speed-val').innerText = `${speed.toFixed(1)} m/min`;
+            
+            try {
+                const response = await fetch('/api/what-if', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        stock_flow_override: stock,
+                        steam_pressure_override: steam,
+                        machine_speed_override: speed
+                    })
+                });
+                const data = await response.json();
+                
+                document.getElementById('whatif-bw').innerText = `${data.predicted_basis_weight.toFixed(2)} g/m²`;
+                document.getElementById('whatif-dev').innerText = `${data.deviation_pct.toFixed(2)}%`;
+                document.getElementById('whatif-risk').innerText = `${data.predicted_risk_score.toFixed(1)}%`;
+                
+                const bar = document.getElementById('whatif-risk-bar');
+                bar.style.width = `${data.predicted_risk_score}%`;
+                
+                // Color bar
+                if (data.predicted_risk_score > 60) {
+                    bar.className = "h-full bg-red-600 transition-all duration-300";
+                } else if (data.predicted_risk_score > 25) {
+                    bar.className = "h-full bg-amber-500 transition-all duration-300";
+                } else {
+                    bar.className = "h-full bg-emerald-500 transition-all duration-300";
+                }
+            } catch (err) {
+                console.error("Error executing what-if simulator:", err);
+            }
+        }
+
+        // Connect real-time WebSocket
+        function connectWS() {
+            const loc = window.location;
+            const wsUri = `ws://${loc.host}/ws`;
+            webSocket = new WebSocket(wsUri);
+            
+            webSocket.onmessage = function (event) {
+                const data = JSON.parse(event.data);
+                
+                if (data.type === 'history') {
+                    // Populate initial historical buffers
+                    data.data.forEach(row => updateDataBuffers(row));
+                    updateCharts();
+                } else {
+                    // Live state update
+                    updateDataBuffers(data.state);
+                    updateKPIs(data.state);
+                    updatePredictionUI(data.prediction);
+                    updateRecommendationsUI(data.recommendations);
+                    updateCharts();
+                }
+            };
+            
+            webSocket.onclose = function () {
+                setTimeout(connectWS, 2000); // auto reconnect
+            };
+        }
+
+        function updateDataBuffers(row) {
+            chartData.timestamps.push(new Date().toLocaleTimeString());
+            chartData.basis_weight.push(row.basis_weight);
+            chartData.basis_weight_sp.push(row.basis_weight_sp);
+            chartData.steam_pressure.push(row.steam_pressure);
+            chartData.moisture.push(row.moisture);
+            chartData.machine_speed.push(row.machine_speed);
+            chartData.stock_flow.push(row.stock_flow);
+            
+            // cap at 100 points
+            if (chartData.timestamps.length > 100) {
+                chartData.timestamps.shift();
+                chartData.basis_weight.shift();
+                chartData.basis_weight_sp.shift();
+                chartData.steam_pressure.shift();
+                chartData.moisture.shift();
+                chartData.machine_speed.shift();
+                chartData.stock_flow.shift();
+            }
+        }
+
+        function updateKPIs(state) {
+            document.getElementById('kpi-bw').innerText = state.basis_weight.toFixed(2);
+            document.getElementById('kpi-bw-sp').innerText = `Set: ${state.basis_weight_sp.toFixed(2)}`;
+            document.getElementById('kpi-moisture').innerText = state.moisture.toFixed(2);
+            document.getElementById('kpi-moisture-sp').innerText = `Set: ${state.moisture_sp.toFixed(2)}`;
+            document.getElementById('kpi-speed').innerText = state.machine_speed.toFixed(2);
+            document.getElementById('kpi-speed-sp').innerText = `Set: ${state.machine_speed_sp.toFixed(2)}`;
+            document.getElementById('kpi-steam').innerText = state.steam_pressure.toFixed(2);
+            document.getElementById('kpi-steam-sp').innerText = `Set: ${state.steam_pressure_sp.toFixed(2)}`;
+            
+            // Header
+            document.getElementById('header-recipe-name').innerText = GRADES[state.recipe_id]?.name || "Custom Grade";
+            
+            // Dev text
+            const dev = (state.basis_weight - state.basis_weight_sp) / state.basis_weight_sp;
+            const devEl = document.getElementById('kpi-bw-dev');
+            if (Math.abs(dev) > 0.025) {
+                devEl.className = "inline-flex items-center text-red-500 font-mono font-bold animate-pulse";
+                devEl.innerHTML = `<i data-lucide="alert-triangle" class="w-3.5 h-3.5 mr-0.5"></i> Breach (${(dev*100).toFixed(1)}%)`;
+                document.getElementById('header-control-status').innerText = "LIMIT BREACH ERROR";
+                document.getElementById('header-control-status').className = "text-sm font-semibold text-red-500 animate-pulse";
+            } else {
+                devEl.className = "inline-flex items-center text-emerald-400 font-mono";
+                devEl.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5 mr-0.5"></i> Stable (${(dev*100).toFixed(2)}%)`;
+                document.getElementById('header-control-status').innerText = state.in_transition ? "Ramping Trajectory" : "Steady State / Stable";
+                document.getElementById('header-control-status').className = "text-sm font-semibold " + (state.in_transition ? "text-honeywell-neonBlue" : "text-emerald-400");
+            }
+            
+            // Update transition progress percentage
+            const pCard = document.getElementById('transition-progress-card');
+            const pBar = document.getElementById('transition-bar');
+            const pTxt = document.getElementById('transition-percent');
+            
+            if (state.in_transition) {
+                const progress = Math.min(100, Math.round((state.transition_time / state.transition_duration) * 100));
+                pTxt.innerText = `${progress}% (Ramping)`;
+                pBar.style.width = `${progress}%`;
+            } else {
+                pTxt.innerText = "0% (Steady State)";
+                pBar.style.width = "0%";
+            }
+            
+            lucide.createIcons();
+        }
+
+        function updatePredictionUI(pred) {
+            const score = pred.risk_score;
+            document.getElementById('risk-score-text').innerText = `${score.toFixed(1)}%`;
+            document.getElementById('risk-score-large').innerText = `${score.toFixed(1)}%`;
+            
+            const explanationText = document.getElementById('risk-explanation-text');
+            const explanationTextLarge = document.getElementById('explain-sentence-container');
+            explanationText.innerText = pred.explanation;
+            explanationTextLarge.innerText = pred.explanation;
+            
+            // Circle offsets
+            const circle = document.getElementById('risk-gauge-circle');
+            const circleLarge = document.getElementById('risk-gauge-large');
+            const circumference = 2 * Math.PI * 40; // 251.2
+            const offset = circumference - (score / 100) * circumference;
+            circle.setAttribute("stroke-dashoffset", offset);
+            circleLarge.setAttribute("stroke-dashoffset", offset);
+            
+            // Set gauge color based on risk severity
+            let severityColor = "text-emerald-400";
+            let severityText = "Stable";
+            let strokeColor = "#39FF14";
+            
+            if (score > 60) {
+                severityColor = "text-red-500 animate-pulse";
+                severityText = "CRITICAL";
+                strokeColor = "#EE3124";
+            } else if (score > 25) {
+                severityColor = "text-amber-500";
+                severityText = "WARNING";
+                strokeColor = "#F59E0B";
+            }
+            
+            document.getElementById('risk-severity-text').innerText = severityText;
+            document.getElementById('risk-severity-text').className = `text-[10px] font-bold uppercase tracking-wider font-mono ${severityColor}`;
+            document.getElementById('risk-severity-large').innerText = severityText;
+            document.getElementById('risk-severity-large').className = `text-xs font-bold uppercase tracking-wider font-mono mt-1 ${severityColor}`;
+            
+            circle.setAttribute("stroke", strokeColor);
+            circleLarge.setAttribute("stroke", strokeColor);
+            
+            // Populate SHAP bars
+            const shapContainer = document.getElementById('shap-contributions-container');
+            shapContainer.innerHTML = '';
+            
+            pred.contributions.forEach(c => {
+                const label = c.feature.replace('_', ' ');
+                const val = c.percentage;
+                
+                const el = document.createElement('div');
+                el.className = "space-y-1";
+                el.innerHTML = `
+                    <div class="flex justify-between text-xs font-mono">
+                        <span class="text-slate-300 font-semibold">${label}</span>
+                        <span class="text-slate-400">${c.direction === 'increase' ? '↑' : '↓'} ${val}%</span>
+                    </div>
+                    <div class="h-2 bg-slate-800 rounded-full overflow-hidden">
+                        <div class="h-full bg-honeywell-blue" style="width: ${val}%"></div>
+                    </div>
+                `;
+                shapContainer.appendChild(el);
+            });
+        }
+
+        let activePromptRec = null;
+        let promptDismissed = false;
+
+        function updateRecommendationsUI(recs) {
+            const container = document.getElementById('recommendations-container');
+            container.innerHTML = '';
+            
+            // Check for active promptable recommendation
+            const actionableRec = recs.find(r => r.variable !== "none" && !processedRecs.has(r.id));
+            const promptEl = document.getElementById('live-advisory-prompt');
+
+            if (actionableRec && !promptDismissed) {
+                activePromptRec = actionableRec;
+                document.getElementById('prompt-source-tag').innerText = actionableRec.source_of_inference.toUpperCase();
+                document.getElementById('prompt-action-text').innerText = actionableRec.action;
+                document.getElementById('prompt-recovery-text').innerText = `Expected recovery time: ${actionableRec.expected_recovery_time_s} seconds`;
+                promptEl.classList.remove('hidden');
+            } else if (!actionableRec) {
+                promptDismissed = false;
+                promptEl.classList.add('hidden');
+            }
+            
+            recs.forEach(r => {
+                const card = document.createElement('div');
+                card.id = r.id;
+                card.className = "glass-panel p-6 rounded-2xl border border-honeywell-border hover:border-honeywell-neonBlue/40 transition flex flex-col justify-between space-y-4";
+                
+                let actionButtons = '';
+                if (processedRecs.has(r.id)) {
+                    const status = processedRecs.get(r.id);
+                    if (status === 'accept') {
+                        actionButtons = `
+                            <div class="pt-2 flex items-center">
+                                <span class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-600/20 text-emerald-400 border border-emerald-500/30">
+                                    <i data-lucide="check-circle" class="w-4 h-4 mr-1.5"></i> Setpoint Accepted & Applied to Control
+                                </span>
+                            </div>
+                        `;
+                    } else {
+                        actionButtons = `
+                            <div class="pt-2 flex items-center">
+                                <span class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                    <i data-lucide="x-circle" class="w-4 h-4 mr-1.5"></i> Setpoint Rejected
+                                </span>
+                            </div>
+                        `;
+                    }
+                } else if (r.variable !== "none") {
+                    actionButtons = `
+                        <div class="flex items-center space-x-2 pt-2">
+                            <button onclick="handleActionClick('${r.id}', 'accept', '${r.action}', '${r.source_of_inference}')" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-1.5 px-3 rounded-lg text-xs transition flex items-center justify-center">
+                                <i data-lucide="check" class="w-3.5 h-3.5 mr-1"></i> Accept Setpoint
+                            </button>
+                            <button onclick="handleActionClick('${r.id}', 'reject', '${r.action}', '${r.source_of_inference}')" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-1.5 px-3 rounded-lg text-xs transition flex items-center justify-center border border-slate-700">
+                                <i data-lucide="x" class="w-3.5 h-3.5 mr-1"></i> Reject
+                            </button>
+                        </div>
+                    `;
+                }
+                
+                card.innerHTML = `
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-start">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-honeywell-blue/10 text-honeywell-neonBlue border border-honeywell-blue/20">
+                                SOURCE: ${r.source_of_inference.toUpperCase()}
+                            </span>
+                            <span class="text-xs font-mono font-bold text-slate-400">Confidence: ${r.confidence}%</span>
+                        </div>
+                        <h4 class="font-bold text-lg text-white">${r.action}</h4>
+                        <div class="text-xs text-slate-400">Expected recovery time: <span class="text-white font-semibold">${r.expected_recovery_time_s} seconds</span></div>
+                    </div>
+                    ${actionButtons}
+                `;
+                
+                container.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        async function acceptPromptSetpoint() {
+            if (!activePromptRec) return;
+            const rec = activePromptRec;
+            await handleActionClick(rec.id, 'accept', rec.action, rec.source_of_inference);
+            
+            const promptEl = document.getElementById('live-advisory-prompt');
+            document.getElementById('prompt-action-text').innerText = "✓ Setpoint Applied & Machine Stabilized!";
+            setTimeout(() => {
+                promptEl.classList.add('hidden');
+            }, 2000);
+        }
+
+        function dismissPrompt() {
+            promptDismissed = true;
+            document.getElementById('live-advisory-prompt').classList.add('hidden');
+        }
+
+        function updateCharts() {
+            if (overviewChart) {
+                overviewChart.setOption({
+                    xAxis: { data: chartData.timestamps },
+                    series: [
+                        { data: chartData.basis_weight },
+                        { data: chartData.basis_weight_sp },
+                        { data: chartData.steam_pressure }
+                    ]
+                });
+            }
+            
+            if (fullLiveChart) {
+                const overlayVar = document.getElementById('chart-var-2').value;
+                fullLiveChart.setOption({
+                    xAxis: { data: chartData.timestamps },
+                    series: [
+                        { data: chartData.basis_weight },
+                        { data: chartData.basis_weight_sp },
+                        { data: chartData.timestamps.map((_, idx) => chartData[overlayVar][idx]) }
+                    ]
+                });
+            }
+        }
+
+        // Chat Box Logic
+        function appendChatMessage(text, isUser = true) {
+            const chatBox = document.getElementById('copilot-chat-messages');
+            const msg = document.createElement('div');
+            if (isUser) {
+                msg.className = "bg-honeywell-blue/25 p-2.5 rounded-xl text-slate-200 ml-6 text-right";
+            } else {
+                msg.className = "bg-slate-800/80 p-2.5 rounded-xl text-slate-300 mr-6";
+            }
+            msg.innerText = text;
+            chatBox.appendChild(msg);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function handleChatSubmit(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('copilot-input');
+            const text = input.value.trim();
+            if (!text) return;
+            
+            appendChatMessage(text, true);
+            input.value = '';
+            
+            // Simulated expert response matching state context
+            setTimeout(() => {
+                let reply = "";
+                const val = text.toLowerCase();
+                
+                if (val.includes("why") && val.includes("weight")) {
+                    reply = `Basis weight is current ${chartData.basis_weight[chartData.basis_weight.length-1].toFixed(2)} g/m². Risk is driven by dynamic delays in coordinated stock flow and machine speed adjustments.`;
+                } else if (val.includes("recommend") || val.includes("action")) {
+                    reply = "I recommend decreasing Stock Flow by 3.5% or increasing Steam pressure slightly to drive down sheet moisture and stabilize Basis Weight.";
+                } else if (val.includes("steam") || val.includes("moisture")) {
+                    reply = "Steam pressure provides the main heat input. Our correlation explorer discovered a strong negative correlation (-0.82) showing that moisture lags steam adjustments by approximately 22 seconds.";
+                } else {
+                    reply = "Based on current process diagnostics, the QCS controller is tracking setpoints correctly. Moving to Grade 2 requires synchronized ramping of machine speed and stock flow.";
+                }
+                appendChatMessage(reply, false);
+            }, 800);
+        }
+
+        // Bind events on load
+        window.addEventListener('load', () => {
+            initOverviewChart();
+            initFullLiveChart();
+            connectWS();
+            
+            // Initial what-if run
+            runWhatIf();
+            
+            // Watch chart overlays change
+            document.getElementById('chart-var-2').addEventListener('change', updateCharts);
+        });
+
+        // Handle resize
+        window.addEventListener('resize', () => {
+            if (overviewChart) overviewChart.resize();
+            if (fullLiveChart) fullLiveChart.resize();
+        });
+    </script>
+</body>
+</html>
