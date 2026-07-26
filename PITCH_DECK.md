@@ -1,209 +1,192 @@
-# 📊 GradeSense AI — 6-Slide Canva Presentation Pitch Deck
+# 📊 GradeSense AI — Official 6-Slide Pitch Deck Blueprint (PDF Ready)
 
-This blueprint contains the exact text, diagrams, metrics, visual layout guidelines, and callouts to build your presentation in Canva or PowerPoint.
-
----
-
-## 🎨 Global Design System & Styling Guide
-
-* **Background**: Dark Navy (`#0F172A`)
-* **Primary Color**: Honeywell Red (`#EE3124` / `#E2231A`)
-* **Secondary / Accent**: Electric Neon Blue (`#00AEEF` / `#38BDF8`) & Emerald Green (`#10B981`)
-* **Card Container Style**: Glassmorphic dark panels with subtle border (`border border-slate-700/50`) and rounded corners (`16px`).
-* **Typography**:
-  * **Headings**: `Inter` / `Outfit` / `Poppins` (Bold, White `#FFFFFF`)
-  * **Subtitles**: `Roboto Mono` / `Inter` (Neon Blue `#38BDF8` or Slate `#94A3B8`)
-  * **Body Text**: `Inter` (Light/Regular `#CBD5E1`)
+> **Strict Hackathon Rules Applied**:
+> ✅ Exactly 6 Slides (Title + 5 Content Slides)
+> ✅ Zero long paragraphs (100% Bullet Points, Flow Diagrams, Infographics & Cards)
+> ✅ Ultra-precise & easy to understand
+> ✅ Highlights Uniqueness & Novelty
 
 ---
 
-## 🔹 Slide 1: Title & Overview
+## 🎨 Global Canva Design Theme
 
-### 📌 Layout & Visual Concept
-* **Background Image**: Darkened, high-tech paper mill cylinder roll with semi-transparent neon network overlays.
-* **Layout**: Centered title with Honeywell red accent badge and glowing callouts.
+* **Canvas Ratio**: `16:9` Widescreen
+* **Color Palette**: Dark Navy Background (`#0F172A`), Honeywell Red Accents (`#EE3124`), Neon Blue (`#38BDF8`), Emerald Green (`#10B981`)
+* **Format Requirement**: Export from Canva as **PDF Standard / PDF Print** for portal upload.
 
-### 📝 Slide Content
+---
 
-#### Badge Header
+## 🔹 SLIDE 1: TITLE SLIDE
+*(Slide 1 of 6)*
+
+### 🎨 Visual Layout
+* Centered bold title card over a subtle dark industrial paper-mill background.
+* Top right: Honeywell Red logo / accent tag.
+
+### 📝 Slide Content (Exact Copy)
+
+#### Top Badge
 > `HONEYWELL HACKATHON 2026 — PAPER GRADE CHANGE INTELLIGENCE`
 
 #### Main Title
 # **GradeSense AI**
 ### **AI-Powered Decision Intelligence for Paper Grade Transitions**
 
-#### Subtitle
-> **Predicting Basis Weight Quality Breaches 120s Ahead with Explainable AI & Closed-Loop Operator Advisory**
+#### Key Sub-Points
+* ⏱️ **120-Second Early Warning**: Predicts Basis Weight quality breaches (>±2.5%) before they occur.
+* 🧠 **Explainable AI (TreeSHAP)**: Translates black-box ML into human-readable root cause explanations.
+* ⚡ **1-Click Closed-Loop Advisory**: Global active prompt banner with real-time process stabilization.
+
+#### Presenter Details
+* **Team**: Kioshi-HAWW
+* **Repo**: `github.com/Kioshi-HAWW/PaperGrade_AI`
+* **Live System**: `http://localhost:8000/`
 
 ---
 
-#### 👤 Presenter Details (Bottom Card)
-* **Team Name**: Kioshi-HAWW
-* **Repository**: [github.com/Kioshi-HAWW/PaperGrade_AI](https://github.com/Kioshi-HAWW/PaperGrade_AI)
-* **Platform Live**: `http://localhost:8000/` (Render Cloud Deployment Ready)
+## 🔹 SLIDE 2: PROPOSED SOLUTION & NOVELTY
+*(Slide 2 of 6)*
 
----
+### 🎨 Visual Layout
+* 2-Column Infographic Cards (Red "Current Problem" vs Green "GradeSense Solution") + Bottom Novelty Banner.
 
-## 🔹 Slide 2: Problem Statement & Proposed Solution
-
-### 📌 Layout & Visual Concept
-* **Layout**: 2-Column Comparison Layout (Red "Current Challenges" vs Green "GradeSense Solution") with an innovation banner at the bottom.
-
----
-
-### 📝 Left Column: Current Transition Challenges 🔴
-
-| Challenge | Impact on Mill Performance |
-|---|---|
-| 🔴 **Off-Spec Quality Loss** | Basis Weight strays >±2.5% from setpoint during grade shifts. |
-| 🔴 **Paper Web Breaks** | Uncoordinated speed & stock ramping causes costly sheet tears. |
-| 🔴 **Slow Recovery Times** | Long stabilization lag (20–45 min per grade change). |
-| 🔴 **Reactive Operator Control** | Operators act *after* quality limits are breached. |
-
----
-
-### 📝 Right Column: GradeSense AI Solution 🟢
-
-* ⚡ **120-Second Predictive Lead Time**: XGBoost model predicts Basis Weight breaches *before* they occur.
-* 🧠 **TreeSHAP Explainability**: Translates complex ML factors into plain-language root causes.
-* 🎯 **Quantified Actionable Setpoints**: Advises explicit deltas (e.g. *"Reduce Stock Flow by 3.5%"*).
-* 🔄 **Closed-Loop Feedback & Impact Log**: Records operator acceptance and tracks real-time machine recovery.
-
----
-
-### 💡 Bottom Banner: Core Innovation
-> **Shift from Reactive QCS Tuning → Proactive Decision Intelligence: Predict ➔ Explain ➔ Advise ➔ Stabilize.**
-
----
-
-## 🔹 Slide 3: System Architecture & Technical Approach
-
-### 📌 Layout & Visual Concept
-* **Layout**: Left 60% Process Diagram Flow | Right 40% Technology Stack Cards.
-
----
-
-### 📝 Left Section: Process Data Flow Diagram
+### 📝 Slide Content (Exact Copy)
 
 ```
-QCS / Sensor Data (Stock, Steam, Speed, Moisture, Ash, Caliper)
-                         │
-                         ▼
-             Data Cleaning & Feature Pipeline
-          (15s Rolling Mean, Std, Slope & Errors)
-                         │
-                         ▼
-        ┌────────────────┴────────────────┐
-        ▼                                 ▼
-XGBoost Risk Classifier       Granger Correlation Engine
-(Predicts BW Breach >±2.5%)   (Discovers Dynamic Loop Lags)
-        │                                 │
-        └────────────────┬────────────────┘
-                         ▼
-             TreeSHAP Explainability
-            ("Why" Feature Attribution)
-                         │
-                         ▼
-          Quantified Advisory Engine
-         (Setpoint Deltas + Source Tags)
-                         │
-                         ▼
-       FastAPI WebSockets + ECharts UI
-        (Live Global Prompt & Impact Log)
+       CURRENT PROBLEM (🔴)                       GRADESENSE AI SOLUTION (🟢)
+┌──────────────────────────────────────┐    ┌──────────────────────────────────────┐
+│ • Off-Spec Paper (>±2.5% BW Breach)  │    │ • 120s Early Breach Warning          │
+│ • Frequent Sheet Web Breaks          │    │ • TreeSHAP Root Cause Explanations   │
+│ • Long Recovery Lag (20–45 minutes)  │    │ • Explicit Setpoint Recommendations  │
+│ • Reactive Manual Operator Control   │    │ • 1-Click Action & Impact Logging    │
+└──────────────────────────────────────┘    └──────────────────────────────────────┘
 ```
 
----
+#### Infographic Flow
+`Telemetry Data` ➔ `Risk Prediction (XGBoost)` ➔ `TreeSHAP Explanation` ➔ `Advisory Prompt` ➔ `Operator Action` ➔ `Stabilization`
 
-### 📝 Right Section: Production Tech Stack
-
-* ⚡ **Backend Engine**: `Python 3.12` • `FastAPI` • `Uvicorn`
-* 📡 **Real-Time Pipeline**: `WebSockets` (1s live streaming telemetry)
-* 🧠 **Machine Learning**: `XGBoost` (Classifier) • `TreeSHAP` (Feature Attribution)
-* 📊 **Frontend UI**: `Vanilla JS` • `Tailwind CSS` • `Apache ECharts`
-* ☁️ **Deployment**: `Docker` • `Render.yaml Blueprint`
+#### 🌟 Unique & Novel Innovations
+1. **Explainable Industrial AI**: Removes operator distrust by showing exact % feature attributions.
+2. **Global Active Advisory Prompt**: Operates seamlessly across all dashboard tabs for instant 1-click execution.
+3. **Dynamic Correlation Discovery Engine**: Finds undocumented process loop lags (e.g. Steam ↔ Moisture delay) using Granger Causality.
 
 ---
 
-## 🔹 Slide 4: Feasibility & Implementation Strategy
+## 🔹 SLIDE 3: TECHNICAL APPROACH & ARCHITECTURE
+*(Slide 3 of 6)*
 
-### 📌 Layout & Visual Concept
-* **Layout**: 3 Grid Cards (Hardware Feasibility, Operational Challenges, Mitigations).
+### 🎨 Visual Layout
+* Left 65%: Architecture & Data Pipeline Flowchart | Right 35%: Tech Stack Infographic Badges.
 
----
+### 📝 Slide Content (Exact Copy)
 
-### 📝 Card 1: 100% Software-Only Feasibility ✅
-* **Zero New Hardware Required**: Integrates seamlessly with existing QCS/DCS sensors (*Stock Flow, Steam Pressure, Machine Speed, Moisture, Ash, Caliper*).
-* **Non-Disruptive Advisory Layer**: Runs alongside existing QCS loops without risk of plant shutdowns.
+#### AI System Architecture Diagram
 
----
+```
+[ Sensor Telemetry ] ➔ Stock Flow, Steam Pressure, Speed, Moisture, Ash, Caliper
+        │
+        ▼
+[ Feature Pipeline ] ➔ 15s Rolling Mean, Std, Slope & Recipe Target Errors
+        │
+        ▼
+┌───────────────────┴───────────────────┐
+▼                                       ▼
+[ XGBoost Risk Classifier ]           [ Granger Correlation Engine ]
+Predicts BW Breach (>±2.5%)            Discovers Dynamic Delay Loops
+        │                                       │
+        └───────────────────┬───────────────────┘
+                            ▼
+             [ TreeSHAP Explainability ]
+             Translates Root Causes to English
+                            ▼
+           [ Quantified Advisory Engine ]
+           "Reduce Stock Flow by 3.5%"
+                            ▼
+      [ FastAPI WebSockets + ECharts Dashboard ]
+      Global Prompt Banner + Impact Verification Log
+```
 
-### 📝 Card 2: Key Operational Challenges ⚠️
-1. **Dynamic Process Lags**: Thermal steam drying lags sheet moisture by 20–30 seconds.
-2. **Highly Correlated Multivariable Loops**: Speed changes affect both weight and moisture simultaneously.
-3. **Operator Trust**: Closed-box ML models are rejected by mill operators.
-
----
-
-### 📝 Card 3: GradeSense AI Solution Strategies 🛡️
-* **Feature Engineering**: Incorporates 15s rolling slopes and dynamic lag matrices.
-* **Explainable AI (TreeSHAP)**: Provides full transparency into *why* an advisory is generated.
-* **What-if Digital Twin Simulator**: Allows operators to test setpoints risk-free before applying.
-
----
-
-## 🔹 Slide 5: Key Platform Artifacts & Live Features ⭐
-
-### 📌 Layout & Visual Concept
-* **Layout**: 4 Feature Highlight Cards with actual application metrics and visual callouts.
-
----
-
-### 📝 Feature 1: Live Telemetry & Risk Gauge 📈
-* **0–100% Dynamic Risk Meter**: Pulsing visual alert when breach risk exceeds >25%.
-* **Live ECharts Buffering**: 100-point sliding window for Basis Weight, Steam, and Machine Speed.
-
----
-
-### 📝 Feature 2: TreeSHAP Explainability & Root Cause 🧠
-* **Feature Contributions**: Ranks parameters by % impact on breach risk.
-* **Human-Readable Output**: *"Risk is driven by high steam drying pressure and stock flow deviation."*
+#### Tech Stack Badges
+* ⚡ **Backend**: Python 3.12, FastAPI, Uvicorn, WebSockets
+* 🧠 **AI/ML**: XGBoost, TreeSHAP, Scikit-Learn, Pandas
+* 📊 **Frontend**: Vanilla JS, Tailwind CSS, Apache ECharts
+* ☁️ **Deployment**: Docker, Render Blueprint (`render.yaml`)
 
 ---
 
-### 📝 Feature 3: Global Live Advisory Prompt Banner ⚡
-* **Cross-Tab Banner**: Prompts operators on **any tab** (Overview, Live Monitoring, etc.).
-* **1-Click Execution**: **`[ Accept & Apply Setpoint ]`** button instantly adjusts simulator state and recovers machine stability.
+## 🔹 SLIDE 4: FEASIBILITY & CHALLENGES
+*(Slide 4 of 6)*
+
+### 🎨 Visual Layout
+* 3 Equal Grid Cards (Feasibility, Operational Challenges, Solution Strategy).
+
+### 📝 Slide Content (Exact Copy)
+
+#### Card 1: 100% Software Feasibility ✅
+* **Zero Hardware Changes**: Uses existing QCS & DCS sensors (*Stock, Steam, Speed, Moisture, Ash, Caliper*).
+* **Non-Disruptive Advisory Layer**: Pure advisory digital twin — zero risk of accidental plant shutdown.
+* **Instant Deployment**: Fully containerized with Docker & Render cloud blueprints.
+
+#### Card 2: Key Industry Challenges ⚠️
+1. **Dynamic Process Lags**: Thermal steam drying lags sheet moisture by 20–30s.
+2. **Highly Correlated Loops**: Machine speed impacts both weight and moisture simultaneously.
+3. **Operator Black-Box Resistance**: Operators reject unexplainable ML predictions.
+
+#### Card 3: GradeSense Mitigation Strategy 🛡️
+* **Windowed Slopes**: Incorporates 15s rolling rates of change to capture dynamic lags.
+* **SHAP Transparency**: Shows plain-English reason behind every recommendation.
+* **What-If Digital Twin**: Allows operators to simulate setpoints risk-free before applying.
 
 ---
 
-### 📝 Feature 4: Measured Impact History Log 📜
-* **Stabilization Metrics**: Logs initial vs final risk (`85% → 5%`) and BW deviation (`+3.2% → -0.1%`).
-* **Recovery Benchmark**: Proves recovery completion within **28 seconds**.
+## 🔹 SLIDE 5: LIVE PLATFORM ARTIFACTS & DEMO
+*(Slide 5 of 6)*
+
+### 🎨 Visual Layout
+* 4 Screenshot Highlight Cards with UI Callouts & Key Performance Metrics.
+
+### 📝 Slide Content (Exact Copy)
+
+```
+┌──────────────────────────────────────┐    ┌──────────────────────────────────────┐
+│ 1. Real-Time Telemetry & Risk Meter  │    │ 2. TreeSHAP Feature Attributions     │
+│ • 0–100% Dynamic Risk Meter          │    │ • Top Contributing Factor Ranking    │
+│ • 100-Point Sliding Window ECharts   │    │ • Plain-English Explanation Output   │
+│ • Live Basis Weight Deviation Tracking│    │ • "Steam Pressure & Stock Flow High" │
+└──────────────────────────────────────┘    └──────────────────────────────────────┘
+┌──────────────────────────────────────┐    ┌──────────────────────────────────────┐
+│ 3. Global Live Advisory Banner ⚡    │    │ 4. Measured Impact History Log 📜    │
+│ • Appears on ANY active tab          │    │ • Measured Risk Drop: 85% ➔ 5%       │
+│ • 1-Click [ Accept & Apply Setpoint ]│    │ • BW Deviation Recovery: +3.2% ➔ -0.1%│
+│ • Direct Simulator Physics Tuning    │    │ • Verified 28s Machine Recovery      │
+└──────────────────────────────────────┘    └──────────────────────────────────────┘
+```
+
+#### Key Demonstrated Metric
+> **Risk Reduction: 85.0% ➔ 5.0% | BW Deviation Stabilized to -0.1% | Recovery Time: 28s**
 
 ---
 
-## 🔹 Slide 6: Research, Future Scope & Closing
+## 🔹 SLIDE 6: RESEARCH, ROADMAP & CLOSING
+*(Slide 6 of 6)*
 
-### 📌 Layout & Visual Concept
-* **Layout**: 2 Columns (References vs Future Roadmap) + Bold Closing Tagline.
+### 🎨 Visual Layout
+* 2 Columns (References & Standards vs Future Roadmap) + Bottom Tagline.
 
----
+### 📝 Slide Content (Exact Copy)
 
-### 📝 Left Column: References & Industry Standards 📚
-* **Honeywell QCS & MD Control Specs**: Multi-variable cross-directional and machine-direction control standards.
-* **XGBoost & TreeSHAP Literature**: Lundberg & Lee (2017) *A Unified Approach to Interpreting Model Predictions*.
-* **Granger Causality in Process Control**: Identification of dynamic delays in industrial process loops.
+#### Left Column: References & Standards 📚
+* **Honeywell QCS & MD Control Specs**: Multivariable Machine Direction Control standards.
+* **SHAP Interpretability Framework**: Lundberg & Lee (2017) *Unified Approach to Model Interpretation*.
+* **Granger Causality in Process Loops**: Time-series lead-lag relationship analysis.
 
----
-
-### 📝 Right Column: Future Roadmap 🚀
-* **Reinforcement Learning (RL)**: Self-optimizing ramping trajectories for autonomous grade transitions.
-* **Edge AI Integration**: Deployment directly on Honeywell Experion PKS edge nodes.
-* **Digital Twin Expansion**: Full 3D wet-end to reel physical simulation.
-* **Honeywell Forge Integration**: Enterprise cloud analytics sync across multi-mill fleets.
+#### Right Column: Future Roadmap 🚀
+* 🤖 **Reinforcement Learning (RL)**: Self-optimizing ramping trajectories for autonomous shifts.
+* ⚡ **Edge AI Integration**: Direct deployment on Honeywell Experion PKS edge nodes.
+* 🌐 **Honeywell Forge Integration**: Fleet-wide analytics sync across multi-mill operations.
 
 ---
 
-### 🎯 Closing Tagline
+### 🎯 Final Tagline (Bottom Banner)
 > # **Predict Earlier. Explain Clearly. Optimize Smarter.**
 > **GradeSense AI — Next-Generation Paper Machine Intelligence**
